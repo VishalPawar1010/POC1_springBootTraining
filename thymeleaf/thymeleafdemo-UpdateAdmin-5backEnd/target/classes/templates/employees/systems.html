@@ -1,0 +1,134 @@
+<!-- <%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%> -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css"
+	rel="stylesheet">
+
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+	
+	<title>Admin Directory</title>
+</head>
+
+
+<body style="margin-top: 20px; margin-left: 30px;">
+<h2>Systems(Admin) home page !</h2>
+<p> You can update authority of employee here !</p>
+
+	<div class="container">
+
+		<h3>Authorisation People Directory</h3>
+		<hr>
+
+		<div>
+			User: <span sec:authentication="name"></span> <br> Role(s): <span
+				sec:authentication="principal.authorities"></span> <br> <br>
+		</div><hr>
+		
+		<a th:href="@{/employees/showFormToAddRole}"
+				class="btn btn-primary btn-sm mr-5 mb-3"> Add New User </a>
+	
+		
+	
+
+
+		<table class="table table-bordered table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th>User Name</th>
+					<th>Authority</th>
+
+					<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+						<th>Update Position</th>
+					</div>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="tempRole : ${employees}">
+
+					<td th:text="${tempRole.username}" />
+					<td th:text="${tempRole.authority}" />
+					
+
+					<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+
+						<td>
+							<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+
+							<!-- Add "update" button/link -->
+								<a
+									th:href="@{/employees/showRoleForUpdate(roleId=${tempRole.id})}"
+									class="btn btn-info btn-sm"> Update </a>
+
+							</div>
+
+<!-- 							<div sec:authorize="hasRole('ROLE_ADMIN')">
+
+								Add "delete" button/link
+								<a th:href="@{/employees/delete(employeeId=${tempEmployee.id})}"
+									class="btn btn-danger btn-sm"
+									onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+									Delete </a>
+
+							</div> -->
+						</td>
+						<!-- For position update  -->
+<!-- 						<td>
+							<div sec:authorize="hasRole('ROLE_ADMIN')"
+								class="container-fluid">
+
+								Add "Update Position" button/link
+
+
+
+								<div class="dropdown">
+									<button class="btn btn-secondary dropdown-toggle" type="button"
+										data-bs-toggle="dropdown" aria-expanded="True">
+										Update Position</button>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="#">Employee</a></li>
+										<li><a class="dropdown-item" href="#">Manager</a></li>
+										<li><a class="dropdown-item" href="#">Admin</a></li>
+									</ul>
+								</div>
+
+							</div>
+					</div>
+					</td> -->
+
+					</div>
+
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- Add a logout button -->
+		<form action="#" th:action="@{/logout}" method="POST">
+
+			<input type="submit" value="Logout"
+				class="btn btn-outline-primary mt-2" />
+
+		</form>
+
+	</div>
+
+<hr>
+		<a th:href="@{/employees/list}">Back to Employees List</a>
+		
+		
+
+</body>
+</html>
